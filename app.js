@@ -37,5 +37,5 @@ app.get('/search', (req, res) => {
 
 //start and listen on the Expres server
 app.listen(port, () => {
-  console.log(`This is running on http://localhost:${port}, check git`)
+  console.log(`This is running on http://localhost:${port},check git records`)
 })
