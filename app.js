@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-//get list from restaurant.JSON
-const restaurantList = require('./restaurant.json')
+// get list from restaurant.JSON
+const shopList = require('./restaurant.json')
 
 //set express-handlebars & template engine
 const exhdbs = require('express-handlebars')
@@ -30,7 +30,7 @@ app.use(express.static('public'))
 //set routes path
 //主路徑
 app.get('/', (req, res) => {
-  res.render('index', { restaurant: restaurantList.results })
+  res.render('index', { restaurant: shopList.results })
 })
 //showpage 路徑
 app.get('/restaurants/:store_id', (req, res) => {
