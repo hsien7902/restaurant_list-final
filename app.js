@@ -3,14 +3,14 @@ const app = express()
 const port = 3000
 
 //get list from restaurant.JSON
-// const restaurantList = require('./restaurant.json')
+const restaurantList = require('./restaurant.json')
 
 //set express-handlebars & template engine
 const exhdbs = require('express-handlebars')
 
 //載入mongodb=>設定mongo連線
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 //設定連線狀態=>監聽連線成功與否
 const db = mongoose.connection
