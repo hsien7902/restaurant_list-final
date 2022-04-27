@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const Shop = require('./models/shop')
 
 // get list from restaurant.JSON
-const shopList = require('./restaurant.json')
+// const shopList = require('./restaurant.json')
 
 //set express-handlebars & template engine
 const exhdbs = require('express-handlebars')
@@ -21,22 +22,29 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-
-app.engine('handlebars', exhdbs({ defaultLayout: 'main' })) //選用handlebars樣板引擎,以main.handlebars為主頁面
-app.set('view engine', 'handlebars')
+app.engine('hbs', exhdbs({ defaultLayout: 'main', extname: '.hbs' })) //選用handlebars樣板引擎,以main.handlebars為主頁面
+app.set('view engine', 'hbs') //啟動hbs引擎
 //set&link static file
 app.use(express.static('public'))
 
 //set routes path
 //主路徑
 app.get('/', (req, res) => {
-  res.render('index', { restaurant: shopList.results })
+  Shop.find().lean()
+    .then(shops =>
+      res.render('index', { restaurant: shops })
+    ).catch(error => console.log(error))
+
 })
 //showpage 路徑
-app.get('/restaurants/:store_id', (req, res) => {
-  const store = restaurantList.results.find(store => store.id.toString() === req.params.store_id)
-  res.render('show', { restaurant: store })
+app.get('/restaurants/:id', (req, res) => {
+  const id = req.params.id //mongodb自動生成id
+  return Shop.findById(id)
+    .lean()
+    .then(shop => res.render('show', { restaurant: shop }))
+    .catch(error => console.log(error))
 })
+
 //set search path
 app.get('/search', (req, res) => {
   console.log('req.query', req.query)
