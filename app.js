@@ -3,14 +3,27 @@ const app = express()
 const port = 3000
 
 //get list from restaurant.JSON
-const restaurantList = require('./restaurant.json')
+// const restaurantList = require('./restaurant.json')
 
 //set express-handlebars & template engine
 const exhdbs = require('express-handlebars')
 
+//載入mongodb=>設定mongo連線
+const mongoose = require('mongoose')
+mongoose.connect(process.env.MONGODB_URI)
+
+//設定連線狀態=>監聽連線成功與否
+const db = mongoose.connection
+db.on('error', () => {
+  console.log('mongodb error')
+})
+db.once('open', () => {
+  console.log('mongodb connected!')
+})
+
+
 app.engine('handlebars', exhdbs({ defaultLayout: 'main' })) //選用handlebars樣板引擎,以main.handlebars為主頁面
 app.set('view engine', 'handlebars')
-
 //set&link static file
 app.use(express.static('public'))
 
@@ -37,5 +50,5 @@ app.get('/search', (req, res) => {
 
 //start and listen on the Expres server
 app.listen(port, () => {
-  console.log(`This is running on http://localhost:${port},check github records`)
+  console.log(`This is running on http://localhost:${port}`)
 })
