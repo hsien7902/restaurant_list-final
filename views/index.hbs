@@ -17,27 +17,33 @@
   </div>
 </div>
 <!-- restaurant list -->
+<div class="add-list">
+  <a href="./restaurants/new">Add Restaurant</a>
+</div>
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
       <!-- render list here -->
-
-      <div class="card">
+      <div class="card-columns">
         {{#each restaurant}}
-        <div class="card mb-3">
-          <img class="card-img-top" src="{{this.image}}" alt="Sababa 沙巴巴中東美食">
+        <div class="card mb-1">
+          <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
           <div class="card-body p-3">
-            <h6 class="card-title mb-1">{{this.name}}</h6>
+            <h5 class="card-title mb-1">{{this.name}}</h5>
 
             <div class="restaurant-category mb-1">
-              <i class="fas fa-utensils pr-2">{{this.category}}</i>
+              <i class="fas fa-utensils pr-2"></i>
+              <h6>{{this.category}}</h6>
             </div>
-            <a href="./restaurants/{{ this._id }}">detail</a>
-            <span class="badge badge-pill badge-danger font-weight-normal">
+            <span class="badge rounded-pill bg-danger font-weight-normal">
               {{this.rating}}
               <i class="fas fa-star fa-xs"></i>
             </span>
-
+          </div>
+          <div class="card-footer text-end ">
+            <a href="./restaurants/{{ this._id }}" class="btn btn-secondary">detail</a>
+            <a href="./restaurants/{{ this._id }}/edit" class="btn btn-success ">edit</a>
+            <a href="./restaurants/{{ this._id }}" class="btn btn-danger ">delete</a>
           </div>
         </div>
         {{/each}}

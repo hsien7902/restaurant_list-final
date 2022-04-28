@@ -1,6 +1,6 @@
 {{!-- showpage here --}}
 <h1 class="mb-1 restaurant-show-title">{{restaurant.name}}</h1>
-<div class="container">
+<div class="container mb-3">
   <div class="row">
     <div class="col-12 col-md-10 mx-auto">
 
@@ -32,11 +32,20 @@
       </p>
 
       <p class="mb-5">
+        <span class="text-secondary">
+          <i class="fas fa-mobile-alt pr-2"></i>
+          本店特色：
+        </span>
         {{restaurant.description}}
       </p>
 
       <img class="rounded mx-auto d-block mb-4 w-100" src="{{restaurant.image}}" alt="{{restaurant.name}}"
         style="max-width: 600px;">
+    </div>
+    <div class="text-center">
+      <a href="./{{ restaurant._id }}/edit" class="btn btn-secondary">edit</a>
+      <a href="/" class="btn btn-success">Back</a>
+      <a href="./{{ this._id }}" class="btn btn-danger">delete</a>
     </div>
   </div>
 </div>

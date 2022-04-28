@@ -1,14 +1,5 @@
-# OS X
-.DS_Store*
-Icon?
-._*
-
-# Windows
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# npm
+# Node.js
 /node_modules
-*.log
-*.gz
+
+# MacOS
+.DS_Store
