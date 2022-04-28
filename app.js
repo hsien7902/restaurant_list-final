@@ -40,6 +40,16 @@ app.get('/', (req, res) => {
     ).catch(error => console.log(error))
 
 })
+// add new page 路徑
+app.get('/restaurants/new', (req, res) => {
+  return res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  return Shop.create(req.body)
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
 //detail page 路徑
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id //mongodb自動生成id
@@ -48,17 +58,9 @@ app.get('/restaurants/:id', (req, res) => {
     .then(shop => res.render('detail', { restaurant: shop }))
     .catch(error => console.log(error))
 })
-// add new page 路徑
-app.get('/restaurants/new', (req, res) => {
-  return res.render('new')
-})
 
-app.post('/restaurants', (req, res) => {
-  const name = req.body.name
-  return Shop.create({ name: name })
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
+
+
 // edit page 路徑
 app.get('/restaurants/:id/edit', (req, res) => {
   const id = req.params.id
@@ -86,10 +88,15 @@ app.get('/search', (req, res) => {
     })
     .catch(error => console.log(error))
 
-  // const showstore = restaurantList.results.filter(store => {
-  //   return store.name.toLowerCase().includes(keyword.toLowerCase()) || store.category.toLowerCase().includes(keyword.toLowerCase())
-  // })
-  // res.render('index', { restaurant: showstore, keyword: keyword })
+})
+
+//set delete path
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Shop.findById(id)
+    .then(shop => shop.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
 
 //start and listen on the Expres server
