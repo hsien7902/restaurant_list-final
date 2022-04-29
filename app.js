@@ -2,9 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 const Shop = require('./models/shop')
-
-// get list from restaurant.JSON
-// const shopList = require('./restaurant.json')
+const routes = require('./routes') //引用路由器
 
 //set express-handlebars & template engine
 const exhdbs = require('express-handlebars')
@@ -29,75 +27,13 @@ app.engine('hbs', exhdbs({ defaultLayout: 'main', extname: '.hbs' })) //選用ha
 app.set('view engine', 'hbs') //啟動hbs引擎
 //set&link static file
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true })) //將req.body資料切換js物件
+app.use(routes) //將request 導入路由器
 
 //set routes path
-//主路徑
-app.get('/', (req, res) => {
-  Shop.find().lean()
-    .then(shops =>
-      res.render('index', { restaurant: shops })
-    ).catch(error => console.log(error))
-
-})
-// add new page 路徑
-app.get('/restaurants/new', (req, res) => {
-  return res.render('new')
-})
-
-app.post('/restaurants', (req, res) => {
-  return Shop.create(req.body)
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
-//detail page 路徑
-app.get('/restaurants/:id', (req, res) => {
-  const id = req.params.id //mongodb自動生成id
-  return Shop.findById(id)
-    .lean()
-    .then(shop => res.render('detail', { restaurant: shop }))
-    .catch(error => console.log(error))
-})
+//主路徑轉移routes
 
 
-
-// edit page 路徑
-app.get('/restaurants/:id/edit', (req, res) => {
-  const id = req.params.id
-  return Shop.findById(id)
-    .lean()
-    .then((shop) => res.render('edit', { restaurant: shop }))
-    .catch(error => console.log(error))
-})
-app.post('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  return Shop.findByIdAndUpdate(id, req.body)
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(error => console.log(error))
-
-})
-
-//set search path
-app.get('/search', (req, res) => {
-  console.log('req.query', req.query)
-  const keyword = req.query.keyword.trim().toLowerCase()
-  return Shop.find()
-    .lean().then(shop => {
-      const pickedShop = shop.filter(shop => shop.name.toLowerCase().includes(keyword) || shop.category.toLowerCase().includes(keyword))
-      res.render('index', { restaurant: pickedShop, keyword: keyword })
-    })
-    .catch(error => console.log(error))
-
-})
-
-//set delete path
-app.post('/restaurants/:id/delete', (req, res) => {
-  const id = req.params.id
-  return Shop.findById(id)
-    .then(shop => shop.remove())
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
-})
 
 //start and listen on the Expres server
 app.listen(port, () => {
