@@ -4,6 +4,7 @@ const port = 3000
 
 const routes = require('./routes') //引用路由器
 require('./config/mongoose') //直接引用mongoose.js 連線
+require('dotenv').config()
 
 //set express-handlebars & template engine
 const exhdbs = require('express-handlebars')
